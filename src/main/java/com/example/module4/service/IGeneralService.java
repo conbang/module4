@@ -1,12 +1,8 @@
 package com.example.module4.service;
 
-import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
-@Service
 public interface IGeneralService<T> {
-
     Iterable<T> findAll();
 
     Optional<T> findById(Long id);
@@ -14,5 +10,4 @@ public interface IGeneralService<T> {
     T save(T t);
 
     void remove(Long id);
-
 }

@@ -1,52 +1,53 @@
 package com.example.module4.model;
 
-import com.sun.istack.NotNull;
+
+
+
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class LoginUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    @NotNull
+    private Long id;
+
+    @Column(unique = true, nullable = false)
     private String username;
-    @NotNull
+
+    @Column(nullable = false)
     private String password;
-    private String name;
-    private Long age;
+
+    @Column(nullable = false)
+    private String fullName;
+
+    private String phoneNumber;
+
+    @Email
     private String email;
-    private String address;
-    private boolean disable = false;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
-    public LoginUser() {
-    }
-
-    public LoginUser(Long id, String username, String password, String name, Long age, String email, String address, boolean disable, UserRole userRole) {
+    public LoginUser(Long id, String username, String password, String fullName, String phoneNumber, String email, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.name = name;
-        this.age = age;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
         this.email = email;
-        this.address = address;
-        this.disable = disable;
-        this.userRole = userRole;
+        this.roles = roles;
     }
 
+    public LoginUser() {
 
-    @ManyToOne
-    private UserRole userRole;
-
-    public UserRole getUserRole() {
-        return userRole;
     }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
-    }
-
-
 
     public Long getId() {
         return id;
@@ -72,20 +73,20 @@ public class LoginUser {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public Long getAge() {
-        return age;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setAge(Long age) {
-        this.age = age;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -96,19 +97,11 @@ public class LoginUser {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public boolean isDisable() {
-        return disable;
-    }
-
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
